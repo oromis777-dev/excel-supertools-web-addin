@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExcelSuperTools</title>
+    <!-- Office JavaScript API -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <link rel="stylesheet" href="taskpane.css">
+</head>
+<body class="fluent-theme">
+    <div id="app" class="app-container">
+        <!-- Верхній хедер з логотипом та статусом -->
+        <header class="app-header">
+            <div class="logo-area">
+                <img src="../../assets/icon-32.png" alt="ExcelSuperTools" class="app-logo">
+                <div class="header-titles">
+                    <h1 class="app-title">ExcelSuperTools</h1>
+                    <span class="app-subtitle">Професійні інструменти</span>
+                </div>
+            </div>
+            <div class="status-badge online" id="status-badge" title="Сервіс активний">
+                <span class="status-dot"></span>
+                <span class="status-text">Готовий</span>
+            </div>
+        </header>
+
+        <!-- Навігаційні вкладки -->
+        <nav class="nav-tabs" role="tablist">
+            <button class="nav-tab active" data-tab="grid-tab" role="tab" aria-selected="true" title="Фокусна сітка">
+                <span class="tab-icon">🎯</span>
+                <span class="tab-label">Сітка</span>
+            </button>
+            <button class="nav-tab" data-tab="ai-tab" role="tab" aria-selected="false" title="AI Помічник">
+                <span class="tab-icon">✨</span>
+                <span class="tab-label">AI Помічник</span>
+            </button>
+            <button class="nav-tab" data-tab="copy-tab" role="tab" aria-selected="false" title="Копіювання діапазонів">
+                <span class="tab-icon">📋</span>
+                <span class="tab-label">Вставка</span>
+            </button>
+            <button class="nav-tab" data-tab="settings-tab" role="tab" aria-selected="false" title="Налаштування">
+                <span class="tab-icon">⚙️</span>
+                <span class="tab-label">Опції</span>
+            </button>
+        </nav>
+
+        <!-- Вміст вкладок -->
+
+        <!-- 1. Вкладка Фокусної Сітки (Kutools Reading Layout Style) -->
+        <section id="grid-tab" class="tab-content active">
+            <!-- Головний перемикач -->
+            <div class="card toggle-card">
+                <label class="toggle-control">
+                    <input type="checkbox" id="chk-grid-enable">
+                    <span class="toggle-slider"></span>
+                    <div class="toggle-info">
+                        <span class="toggle-title">Увімкнути фокусну сітку</span>
+                        <span class="toggle-desc">Підсвічування активної області таблиці</span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Секція: Фігури (Shapes) -->
+            <div class="card">
+                <div class="section-title">Фігура (Форма підсвічування):</div>
+                <div class="shape-selector">
+                    <label class="tile-option" title="Перехрестя: одночасне виділення рядка та стовпця">
+                        <input type="radio" name="rad-grid-shape" value="0" checked>
+                        <div class="tile-content">
+                            <span class="tile-icon">➕</span>
+                            <span class="tile-label">Перехрестя</span>
+                        </div>
+                    </label>
+                    <label class="tile-option" title="Пряма лінія: підсвічування тільки активного рядка">
+                        <input type="radio" name="rad-grid-shape" value="1">
+                        <div class="tile-content">
+                            <span class="tile-icon">➖</span>
+                            <span class="tile-label">Пряма (Рядок)</span>
+                        </div>
+                    </label>
+                    <label class="tile-option" title="Вертикальна лінія: підсвічування тільки стовпця">
+                        <input type="radio" name="rad-grid-shape" value="2">
+                        <div class="tile-content">
+                            <span class="tile-icon">❚</span>
+                            <span class="tile-label">Вертикальна</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Секція: Стилі підсвічування (Styles) -->
+            <div class="card">
+                <div class="section-title">Стиль підсвічування:</div>
+                <div class="style-selector">
+                    <label class="tile-option" title="Широка смуга із напівпрозорою колірною заливкою">
+                        <input type="radio" name="rad-grid-style" value="0" checked>
+                        <div class="tile-content">
+                            <span class="style-preview fill-style"></span>
+                            <span class="tile-label">Заливка (смуга)</span>
+                        </div>
+                    </label>
+                    <label class="tile-option" title="Рамка клітинок навколо активного рядка/стовпця">
+                        <input type="radio" name="rad-grid-style" value="1">
+                        <div class="tile-content">
+                            <span class="style-preview border-style"></span>
+                            <span class="tile-label">Рамка</span>
+                        </div>
+                    </label>
+                    <label class="tile-option" title="Тонка витончена лінія контуру">
+                        <input type="radio" name="rad-grid-style" value="2">
+                        <div class="tile-content">
+                            <span class="style-preview line-style"></span>
+                            <span class="tile-label">Тонка лінія</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Секція: Колір та Прозорість -->
+            <div class="card">
+                <div class="section-title">Колір підсвічування:</div>
+                <div class="color-control-wrapper">
+                    <input type="color" id="grid-color" value="#417EBC" class="native-color-picker">
+                    <div class="color-presets" id="color-presets-list">
+                        <button type="button" class="preset-dot" data-color="#E83E8C" style="background:#E83E8C" title="Рожевий (Kutools Pink)"></button>
+                        <button type="button" class="preset-dot active" data-color="#417EBC" style="background:#417EBC" title="Синій (Classic Blue)"></button>
+                        <button type="button" class="preset-dot" data-color="#107C41" style="background:#107C41" title="Смарагдовий (Excel Green)"></button>
+                        <button type="button" class="preset-dot" data-color="#D83B01" style="background:#D83B01" title="Теплий помаранчевий"></button>
+                        <button type="button" class="preset-dot" data-color="#881798" style="background:#881798" title="Пурпуровий"></button>
+                        <button type="button" class="preset-dot" data-color="#00B7C3" style="background:#00B7C3" title="Бірюзовий"></button>
+                        <button type="button" class="preset-dot" data-color="#D18700" style="background:#D18700" title="Золотий"></button>
+                        <button type="button" class="preset-dot" data-color="#495057" style="background:#495057" title="Графітовий"></button>
+                    </div>
+                </div>
+
+                <!-- Повзунок прозорості -->
+                <div class="form-group slider-group">
+                    <div class="slider-header">
+                        <label for="rng-transparency">Прозорість заливки:</label>
+                        <span id="lbl-transparency" class="badge-value">40%</span>
+                    </div>
+                    <input type="range" id="rng-transparency" min="0" max="90" step="5" value="40" class="range-slider">
+                    <div class="range-marks">
+                        <span>0% (Насичений)</span>
+                        <span>50%</span>
+                        <span>90% (Світлий)</span>
+                    </div>
+                </div>
+
+                <!-- Товщина лінії -->
+                <div class="form-group thickness-group">
+                    <label>Товщина лінії:</label>
+                    <div class="thickness-pills">
+                        <label class="pill-btn"><input type="radio" name="rad-thickness" value="1"><span>Тонка (1px)</span></label>
+                        <label class="pill-btn"><input type="radio" name="rad-thickness" value="2" checked><span>Середня (2px)</span></label>
+                        <label class="pill-btn"><input type="radio" name="rad-thickness" value="3"><span>Товста (3px)</span></label>
+                    </div>
+                </div>
+
+                <!-- Додаткові прапорці -->
+                <div class="options-checkboxes">
+                    <label class="checkbox-control">
+                        <input type="checkbox" id="chk-highlight-active" checked>
+                        <span>Підсвічувати активну клітинку окремим акцентом</span>
+                    </label>
+                    <label class="checkbox-control">
+                        <input type="checkbox" id="chk-auto-follow" checked>
+                        <span>Автоматично оновлювати сітку при переході</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Інтерактивне вікно: Попередній перегляд (Live Preview Table) -->
+            <div class="card preview-card">
+                <div class="card-header flex-between">
+                    <span class="preview-title">Попередній перегляд (Preview):</span>
+                    <span id="preview-color-code" class="code-badge">#417EBC</span>
+                </div>
+                <div class="grid-preview-container">
+                    <table id="preview-table" class="mini-sheet">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>C</th>
+                                <th>D</th>
+                                <th>E</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><th>1</th><td>100</td><td>150</td><td>200</td><td>250</td><td>300</td></tr>
+                            <tr><th>2</th><td>110</td><td>160</td><td>210</td><td>260</td><td>310</td></tr>
+                            <tr class="preview-row-active"><th>3</th><td>120</td><td>170</td><td class="preview-cell-active"><b>220</b></td><td>270</td><td>320</td></tr>
+                            <tr><th>4</th><td>130</td><td>180</td><td>230</td><td>280</td><td>330</td></tr>
+                            <tr><th>5</th><td>140</td><td>190</td><td>240</td><td>290</td><td>340</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Кнопки дій -->
+            <div class="action-footer">
+                <button id="btn-apply-grid" class="btn btn-primary full-width">
+                    <span>⚡ Застосувати до таблиці</span>
+                </button>
+                <button id="btn-reset-grid" class="btn btn-secondary full-width">
+                    <span>↺ Скинути до типових</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. Вкладка AI Помічника -->
+        <section id="ai-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>AI Помічник для аналізу та формул</h3>
+                </div>
+
+                <!-- Швидкі дії AI -->
+                <div class="ai-quick-actions">
+                    <button id="btn-quick-analyze" class="action-chip" title="Швидкий аналіз виділеної таблиці">
+                        <span>📊 Аналіз даних</span>
+                    </button>
+                    <button id="btn-quick-formula" class="action-chip" title="Створити формулу під опис">
+                        <span>⚡ Генератор формул</span>
+                    </button>
+                    <button id="btn-quick-explain" class="action-chip" title="Пояснити формулу в активній клітинці">
+                        <span>🔍 Пояснити активну</span>
+                    </button>
+                    <button id="btn-quick-errors" class="action-chip" title="Пошук та виправлення помилок">
+                        <span>🛠️ Виправити помилки</span>
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="ai-prompt">Ваш запит або опис завдання:</label>
+                    <textarea id="ai-prompt" class="form-textarea" rows="3" placeholder="Наприклад: Порахуй середнє значення за умови, що статус 'Оплачено', або проаналізуй прибутковість..."></textarea>
+                </div>
+
+                <div class="btn-row">
+                    <button id="btn-submit-ai" class="btn btn-primary">
+                        <span>✨ Виконати запит</span>
+                    </button>
+                    <button id="btn-clear-ai" class="btn btn-outline">
+                        <span>Очистити</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header flex-between">
+                    <h3>Результат AI</h3>
+                    <div class="result-actions">
+                        <button id="btn-copy-ai" class="btn-link" title="Скопіювати відповідь">📋 Копіювати</button>
+                        <button id="btn-export-sheet" class="btn-link" title="Створити аркуш 'Аналіз_AI'">📑 На новий аркуш</button>
+                    </div>
+                </div>
+                <div id="ai-output" class="output-box">Тут з'явиться структурована відповідь AI або аналітичний звіт...</div>
+            </div>
+        </section>
+
+        <!-- 3. Вкладка Спеціальної Вставки / Копіювання -->
+        <section id="copy-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Спеціальна вставка несуміжних діапазонів</h3>
+                </div>
+                <p class="help-text">Дозволяє виділяти декілька несуміжних областей з утриманням Ctrl та копіювати їх без помилок Excel.</p>
+
+                <div class="btn-row">
+                    <button id="btn-copy-ranges" class="btn btn-primary">
+                        <span>📥 Копіювати виділене</span>
+                    </button>
+                    <button id="btn-paste-ranges" class="btn btn-secondary">
+                        <span>📤 Вставити в активну</span>
+                    </button>
+                </div>
+
+                <div id="clipboard-status-box" class="info-banner">
+                    <span id="clipboard-status-text">Буфер обміну порожній. Виділіть клітинки та натисніть «Копіювати».</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">Параметри вставки:</div>
+                <div class="form-group">
+                    <label for="sel-paste-mode">Режим вставки:</label>
+                    <select id="sel-paste-mode" class="form-select">
+                        <option value="Values">Лише значення (Values)</option>
+                        <option value="Formulas">Формули (Formulas)</option>
+                        <option value="All">Все (Значення, формати та розміри)</option>
+                    </select>
+                </div>
+
+                <label class="checkbox-control">
+                    <input type="checkbox" id="chk-skip-hidden" checked>
+                    <span>Пропускати приховані та відфільтровані рядки</span>
+                </label>
+
+                <label class="checkbox-control">
+                    <input type="checkbox" id="chk-preserve-widths" checked>
+                    <span>Зберігати вихідну ширину стовпців</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- 4. Вкладка Налаштувань -->
+        <section id="settings-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Конфігурація AI провайдера</h3>
+                </div>
+
+                <div class="form-group">
+                    <label for="sel-ai-provider">AI Провайдер:</label>
+                    <select id="sel-ai-provider" class="form-select">
+                        <option value="gemini">Google Gemini (Рекомендовано)</option>
+                        <option value="openai">OpenAI (ChatGPT)</option>
+                        <option value="deepseek">DeepSeek AI</option>
+                        <option value="custom">Власний API / Local Ollama</option>
+                    </select>
+                </div>
+
+                <!-- Блок для Gemini -->
+                <div id="group-gemini" class="provider-group">
+                    <label for="txt-gemini-key">Google Gemini API Key:</label>
+                    <input type="password" id="txt-gemini-key" placeholder="AIzaSy..." class="form-input">
+                    
+                    <label for="sel-gemini-model" style="margin-top:8px;">Модель Gemini:</label>
+                    <select id="sel-gemini-model" class="form-select">
+                        <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash (Найновіша / Рекомендована)</option>
+                        <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash (Швидка та стабільна)</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro (Глибокий бізнес-аналіз)</option>
+                    </select>
+                </div>
+
+                <!-- Блок для OpenAI -->
+                <div id="group-openai" class="provider-group hidden">
+                    <label for="txt-openai-key">OpenAI API Key:</label>
+                    <input type="password" id="txt-openai-key" placeholder="sk-..." class="form-input">
+                    <label for="sel-openai-model" style="margin-top:8px;">Модель OpenAI:</label>
+                    <select id="sel-openai-model" class="form-select">
+                        <option value="gpt-4o-mini">GPT-4o Mini (Швидка)</option>
+                        <option value="gpt-4o">GPT-4o (Потужна)</option>
+                    </select>
+                </div>
+
+                <!-- Блок для DeepSeek -->
+                <div id="group-deepseek" class="provider-group hidden">
+                    <label for="txt-deepseek-key">DeepSeek API Key:</label>
+                    <input type="password" id="txt-deepseek-key" placeholder="sk-..." class="form-input">
+                </div>
+
+                <!-- Блок для Custom -->
+                <div id="group-custom" class="provider-group hidden">
+                    <label for="txt-custom-endpoint">Endpoint URL:</label>
+                    <input type="text" id="txt-custom-endpoint" placeholder="http://localhost:11434/api/generate" class="form-input">
+                </div>
+
+                <div class="separator"></div>
+
+                <label class="checkbox-control">
+                    <input type="checkbox" id="chk-offline-mode">
+                    <span>Офлайн-режим (Без запитів до зовнішніх хмарних серверів)</span>
+                </label>
+
+                <button id="btn-save-settings" class="btn btn-primary full-width">
+                    <span>💾 Зберегти налаштування</span>
+                </button>
+            </div>
+
+            <div class="card footer-card">
+                <p>Версія: 1.2.0 (Kutools Enhanced Web Edition)</p>
+                <a href="../../help.html" target="_blank" class="help-link">📖 Відкрити розширену документацію</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Тост сповіщення -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script type="module" src="taskpane.js"></script>
+</body>
+</html>

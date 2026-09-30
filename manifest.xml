@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp 
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+  xsi:type="TaskPaneApp">
+
+  <Id>a2d8e4f1-9b3c-4d5e-8f12-0a9b8c7d6e5f</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>ExcelSuperTools</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="ExcelSuperTools (Web Add-in)" />
+  <Description DefaultValue="Фокусна сітка, копіювання діапазонів та AI Помічник для Excel" />
+  <IconUrl DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/icon-80.png" />
+  <SupportUrl DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/help.html" />
+  
+  <AppDomains>
+    <AppDomain>https://generativelanguage.googleapis.com</AppDomain>
+    <AppDomain>https://api.openai.com</AppDomain>
+    <AppDomain>https://api.deepseek.com</AppDomain>
+  </AppDomains>
+
+  <Hosts>
+    <Host Name="Workbook" />
+  </Hosts>
+
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/src/taskpane/taskpane.html" />
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="Workbook">
+        <DesktopFormFactor>
+          <GetStarted>
+            <Title resid="GetStarted.Title" />
+            <Description resid="GetStarted.Desc" />
+            <LearnMoreUrl resid="GetStarted.LearnMore" />
+          </GetStarted>
+          
+          <FunctionFile resid="Commands.Url" />
+
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <CustomTab id="TabExcelSuperTools">
+              <Label resid="Tab.Label" />
+              
+              <!-- Група 1: AI Помічник -->
+              <Group id="GroupAIAssistant">
+                <Label resid="GroupAI.Label" />
+                <Icon>
+                  <bt:Image size="16" resid="Icon.AI16" />
+                  <bt:Image size="32" resid="Icon.AI32" />
+                  <bt:Image size="80" resid="Icon.AI80" />
+                </Icon>
+                <Control xsi:type="Button" id="BtnOpenAITaskPane">
+                  <Label resid="BtnOpenAI.Label" />
+                  <Supertip>
+                    <Title resid="BtnOpenAI.Title" />
+                    <Description resid="BtnOpenAI.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.AI16" />
+                    <bt:Image size="32" resid="Icon.AI32" />
+                    <bt:Image size="80" resid="Icon.AI80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>AITaskPane</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url" />
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="BtnAIDataAnalysis">
+                  <Label resid="BtnAIAnalysis.Label" />
+                  <Supertip>
+                    <Title resid="BtnAIAnalysis.Title" />
+                    <Description resid="BtnAIAnalysis.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.AI16" />
+                    <bt:Image size="32" resid="Icon.AI32" />
+                    <bt:Image size="80" resid="Icon.AI80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>actionAnalyzeData</FunctionName>
+                  </Action>
+                </Control>
+                <Control xsi:type="Button" id="BtnAIGenerateFormula">
+                  <Label resid="BtnAIFormula.Label" />
+                  <Supertip>
+                    <Title resid="BtnAIFormula.Title" />
+                    <Description resid="BtnAIFormula.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.AI16" />
+                    <bt:Image size="32" resid="Icon.AI32" />
+                    <bt:Image size="80" resid="Icon.AI80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>actionGenerateFormula</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+
+              <!-- Група 2: Фокусна сітка -->
+              <Group id="GroupFocusGrid">
+                <Label resid="GroupGrid.Label" />
+                <Icon>
+                  <bt:Image size="16" resid="Icon.Grid16" />
+                  <bt:Image size="32" resid="Icon.Grid32" />
+                  <bt:Image size="80" resid="Icon.Grid80" />
+                </Icon>
+                <Control xsi:type="Button" id="BtnToggleFocusGrid">
+                  <Label resid="BtnGrid.Label" />
+                  <Supertip>
+                    <Title resid="BtnGrid.Title" />
+                    <Description resid="BtnGrid.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Grid16" />
+                    <bt:Image size="32" resid="Icon.Grid32" />
+                    <bt:Image size="80" resid="Icon.Grid80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>actionToggleFocusGrid</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+
+              <!-- Група 3: Копіювання діапазонів -->
+              <Group id="GroupCopyRanges">
+                <Label resid="GroupCopy.Label" />
+                <Icon>
+                  <bt:Image size="16" resid="Icon.Copy16" />
+                  <bt:Image size="32" resid="Icon.Copy32" />
+                  <bt:Image size="80" resid="Icon.Copy80" />
+                </Icon>
+                <Control xsi:type="Button" id="BtnCopyRangesDialog">
+                  <Label resid="BtnCopy.Label" />
+                  <Supertip>
+                    <Title resid="BtnCopy.Title" />
+                    <Description resid="BtnCopy.Desc" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.Copy16" />
+                    <bt:Image size="32" resid="Icon.Copy32" />
+                    <bt:Image size="80" resid="Icon.Copy80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>actionShowCopyRangesDialog</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+
+            </CustomTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="Icon.AI16" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/icon-16.png" />
+        <bt:Image id="Icon.AI32" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/icon-32.png" />
+        <bt:Image id="Icon.AI80" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/icon-80.png" />
+        <bt:Image id="Icon.Grid16" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/grid-16.png" />
+        <bt:Image id="Icon.Grid32" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/grid-32.png" />
+        <bt:Image id="Icon.Grid80" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/grid-80.png" />
+        <bt:Image id="Icon.Copy16" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/copy-16.png" />
+        <bt:Image id="Icon.Copy32" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/copy-32.png" />
+        <bt:Image id="Icon.Copy80" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/assets/copy-80.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/src/commands/commands.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/src/taskpane/taskpane.html" />
+        <bt:Url id="GetStarted.LearnMore" DefaultValue="https://oromis777-dev.github.io/excel-supertools-web-addin/help.html" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="GetStarted.Title" DefaultValue="Ласкаво просимо до ExcelSuperTools!" />
+        <bt:String id="Tab.Label" DefaultValue="ExcelSuperTools" />
+        <bt:String id="GroupAI.Label" DefaultValue="AI Помічник" />
+        <bt:String id="BtnOpenAI.Label" DefaultValue="AI Панель" />
+        <bt:String id="BtnOpenAI.Title" DefaultValue="Відкрити AI Помічник" />
+        <bt:String id="BtnAIAnalysis.Label" DefaultValue="Аналіз даних" />
+        <bt:String id="BtnAIAnalysis.Title" DefaultValue="AI Аналіз виділеної таблиці" />
+        <bt:String id="BtnAIFormula.Label" DefaultValue="Генератор формул" />
+        <bt:String id="BtnAIFormula.Title" DefaultValue="Згенерувати формулу Excel" />
+        <bt:String id="GroupGrid.Label" DefaultValue="Фокусна сітка" />
+        <bt:String id="BtnGrid.Label" DefaultValue="Увімкнути підсвітку" />
+        <bt:String id="BtnGrid.Title" DefaultValue="Фокусна сітка (Ctrl+Shift+H)" />
+        <bt:String id="GroupCopy.Label" DefaultValue="Копіювання" />
+        <bt:String id="BtnCopy.Label" DefaultValue="Спеціальна вставка" />
+        <bt:String id="BtnCopy.Title" DefaultValue="Копіювання кількох діапазонів" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="GetStarted.Desc" DefaultValue="Натисніть кнопку на стрічці, щоб відкрити AI Помічник та Фокусну сітку." />
+        <bt:String id="BtnOpenAI.Desc" DefaultValue="Запустіть AI Помічник для аналізу даних, створення та пояснення формул або перекладу." />
+        <bt:String id="BtnAIAnalysis.Desc" DefaultValue="Автоматичний аналіз виділених комірок з висновками та бізнес-рекомендаціями." />
+        <bt:String id="BtnAIFormula.Desc" DefaultValue="Створити формулу на основі опису людською мовою." />
+        <bt:String id="BtnGrid.Desc" DefaultValue="Увімкнення або вимкнення динамічного підсвічування активного рядка/стовпця." />
+        <bt:String id="BtnCopy.Desc" DefaultValue="Копіювання несуміжних областей із збереженням розмірів та фільтрацією прихованих рядків." />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
+

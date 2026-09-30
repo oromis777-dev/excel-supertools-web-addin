@@ -1,0 +1,18 @@
+# Залежності
+node_modules/
+package-lock.json
+
+# Локальні сертифікати та ключі
+certs/*.pfx
+certs/*.cer
+
+# Логи та системні файли
+*.log
+.DS_Store
+Thumbs.db
+
+# Локальні скріншоти
+1.png
+2.png
+3.png
+*.jpg

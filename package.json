@@ -1,0 +1,22 @@
+{
+  "name": "excel-supertools-web-addin",
+  "version": "1.1.0",
+  "description": "ExcelSuperTools Web Add-in - Фокусна сітка, копіювання діапазонів та AI Помічник для Excel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "stop": "pwsh -Command \"Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }; Write-Host 'Порт 3000 звільнено!' -ForegroundColor Green\"",
+    "restart": "npm run stop && npm start",
+    "setup-cert": "pwsh -ExecutionPolicy Bypass -File ./certs/setup_certs.ps1",
+    "generate-icons": "pwsh -ExecutionPolicy Bypass -File ./generate_icons.ps1"
+  },
+  "keywords": [
+    "excel",
+    "office-addin",
+    "ai",
+    "gemini",
+    "supertools"
+  ],
+  "author": "ExcelSuperTools",
+  "license": "MIT"
+}
